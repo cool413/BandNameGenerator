@@ -13,27 +13,39 @@ namespace BandNameGenerator
             var strAry = input.Trim().Select(x => x.ToString()).ToArray();
             if (strAry.Length == 0) { return ""; }
             
-            if (strAry[0] != strAry[^1])
+            if (IsFirstLetterSameAsLast(strAry))
             {
-                return GetNormalName(strAry);
+                return NormalName(strAry);
             }
 
-            return GetRepeatName(strAry);
+            return RepeatName(strAry);
         }
 
-        private static string GetRepeatName(string[] strAry)
+        private static bool IsFirstLetterSameAsLast(string[] strAry)
+        {
+            return strAry[0] != strAry[^1];
+        }
+        
+        private static string NormalName(string[] strAry)
+        {
+            var capitalizedWord = GetCapitalizedWord(strAry);
+            
+            return $"{_firstWord} {capitalizedWord}";
+        }
+
+        private static string RepeatName(string[] strAry)
         {
             var input = string.Join("", strAry);
-            strAry[0] = strAry[0].ToUpper();
-
-            return $"{string.Join("", strAry)}{input.Substring(1, input.Length - 1)}";
+            var capitalizedWord = GetCapitalizedWord(strAry);
+            
+            return $"{capitalizedWord}{input.Substring(1, input.Length - 1)}";
         }
-
-        private static string GetNormalName(string[] strAry)
+        
+        private static string GetCapitalizedWord(string[] strAry)
         {
             strAry[0] = strAry[0].ToUpper();
-
-            return $"{_firstWord} {string.Join("", strAry)}";
+            return string.Join("", strAry);
         }
+
     }
 }
